@@ -1,25 +1,29 @@
-import datetime as date_time
+import datetime
 from src.settings import client
 
 
 class Quotes:
     def __init__(self, ticker, start_date=None, metric_name=None):
         self.ticker = Quotes.validate_ticker(ticker)
-        self.client = client
-        self.current_day_date = date_time.date.today()
+        self._client = client
+        self.current_day_date = datetime.date.today()
         self.current_day_string = self.current_day_date.strftime(r'%m/%d/%Y')
 
         if start_date is None:
-            self.start_datetime = self.current_day_date - date_time.timedelta(days=365)
+            self.start_date = self.current_day_date - datetime.timedelta(days=365)
         else:
-            self.start_datetime = date_time.date.fromisoformat(start_date)
-
-        self.start_string = self.start_datetime.strftime(r'%m/%d/%Y')
+            self.start_date = datetime.date.fromisoformat(start_date)
+        self.start_string = self.start_date.strftime(r'%m/%d/%Y')
 
         # if tickers are list value, metric_name is needed to return 1 tiingo data point
         self.dataframe = client.get_dataframe(tickers=self.ticker, metric_name=metric_name, startDate=self.start_string,
                                               endDate=self.current_day_string)
-        self.dataframe['date'] = self.dataframe.index.date
+        # adding the dates as a column
+        reference_dates = list()
+        for date in self.dataframe.index.date:
+            date = date.strftime(r'%m/%d/%Y')
+            reference_dates.append(date)
+        self.dataframe['date'] = reference_dates
 
     @staticmethod
     def validate_ticker(ticker):
@@ -49,6 +53,22 @@ class Quotes:
         return ticker
 
 
+class DividendCalculator(Quotes):
+    def __init__(self, ticker, initial_price, start_date, end_date=None, metric_name=None):
+        super().__init__(self, ticker, start_date, metric_name=None)
+
+        '''
+            Dividend Calculator
+            Need start date, end date, and ticker information, and initial $$$
+            calculate graph of the info, annual return rate, and number of shares initial and final
+
+            option for repurchase of shares
+            '''
+        end_date = datetime.date.today()
+        initial_price = 1000
+
+
+
 class Calculations:
     @staticmethod
     def moving_average(data, months: int):
@@ -75,6 +95,7 @@ class Calculations:
 
         data['Signal'] = data['MACD'].ewm(min_periods=0, span=9, adjust=False).mean()
         data['delta'] = data['MACD'] - data['Signal']
+
 
 
 
