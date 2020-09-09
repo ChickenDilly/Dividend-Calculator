@@ -7,9 +7,8 @@ import numpy as np
 
 def main():
     # for valid columns from tiingo check dataframe.valid_columns
-    symbol = ['AMD']
-    data = TiingoQuotes.Quotes(symbol).dataframe
-    calc.macd(data)
+    symbol = 'TSLA'
+    data = TiingoQuotes.DividendCalculator(symbol, initial_price=1000).dataframe
 
     # graphing MACD & signal line
     '''

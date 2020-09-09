@@ -1,5 +1,6 @@
 import datetime
 from src.settings import client
+import math
 
 
 class Quotes:
@@ -18,12 +19,13 @@ class Quotes:
         # if tickers are list value, metric_name is needed to return 1 tiingo data point
         self.dataframe = client.get_dataframe(tickers=self.ticker, metric_name=metric_name, startDate=self.start_string,
                                               endDate=self.current_day_string)
-        # adding the dates as a column
+        # adding the dates as the x index
         reference_dates = list()
         for date in self.dataframe.index.date:
             date = date.strftime(r'%m/%d/%Y')
             reference_dates.append(date)
         self.dataframe['date'] = reference_dates
+        self.dataframe.set_index(keys='date', inplace=True)
 
     @staticmethod
     def validate_ticker(ticker):
@@ -54,8 +56,8 @@ class Quotes:
 
 
 class DividendCalculator(Quotes):
-    def __init__(self, ticker, initial_price, start_date, end_date=None, metric_name=None):
-        super().__init__(self, ticker, start_date, metric_name=None)
+    def __init__(self, ticker, initial_price, start_date=None, end_date=None):
+        super().__init__(ticker, start_date=None, metric_name=None)
 
         '''
             Dividend Calculator
@@ -63,11 +65,30 @@ class DividendCalculator(Quotes):
             calculate graph of the info, annual return rate, and number of shares initial and final
 
             option for repurchase of shares
-            '''
-        end_date = datetime.date.today()
-        initial_price = 1000
+            
+            
+            you get dividends per every share owned
+            reinvest dividends for shares
+            only use adjusted values
+        '''
+        self.initial_shares = math.floor(initial_price/self.dataframe['close'][0])
+        self.initial_equity = self.initial_shares * self.dataframe['close'][0]
 
+        shares = self.initial_shares
+        # needed for custom end date
+        # end_date = datetime.date.today()
 
+        self.dividend_cash = 0
+        self.equity = self.initial_equity
+
+       # for row, content in self.dataframe.items():
+
+        '''
+            if row['divCash'] != 0:
+                self.dividend_cash += shares * day
+
+                self.equity += self.dividend_cash
+        '''
 
 class Calculations:
     @staticmethod
