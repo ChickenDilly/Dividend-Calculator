@@ -4,22 +4,26 @@ import math
 
 
 class Quotes:
-    def __init__(self, ticker, start_date=None, metric_name=None):
-        self.ticker = Quotes.validate_ticker(ticker)
-        self._client = client
-        self.current_day_date = datetime.date.today()
-        self.current_day_string = self.current_day_date.strftime(r'%m/%d/%Y')
-
+    def __init__(self, ticker, start_date=None, end_date=None, metric_name=None):
+        # isoformat for date yyyy-mm-dd
         if start_date is None:
             self.start_date = self.current_day_date - datetime.timedelta(days=365)
         else:
             self.start_date = datetime.date.fromisoformat(start_date)
-        self.start_string = self.start_date.strftime(r'%m/%d/%Y')
 
-        # if tickers are list value, metric_name is needed to return 1 tiingo data point
+        if end_date is None:
+            self.current_day_date = datetime.date.today()
+        else:
+            self.end_date = datetime.date.fromisoformat(end_date)
+
+        self.ticker = Quotes.validate_ticker(ticker)
+        self.start_string = self.start_date.strftime(r'%m/%d/%Y')
+        self.current_day_string = self.current_day_date.strftime(r'%m/%d/%Y')
+
+        # if tickers is list value, metric_name is needed to return a tiingo data point
         self.dataframe = client.get_dataframe(tickers=self.ticker, metric_name=metric_name, startDate=self.start_string,
                                               endDate=self.current_day_string)
-        # adding the dates as the x index
+        # adding the dates as the x index for dataframe
         reference_dates = list()
         for date in self.dataframe.index.date:
             date = date.strftime(r'%m/%d/%Y')
@@ -56,52 +60,45 @@ class Quotes:
 
 
 class DividendCalculator(Quotes):
-    def __init__(self, ticker, initial_price, start_date=None, end_date=None):
-        super().__init__(ticker, start_date=None, metric_name=None)
+    def __init__(self, ticker, initial_price, start=None, end_date=None):
+        super().__init__(ticker, start_date=start, metric_name=None)
 
         '''
             Dividend Calculator
             Need start date, end date, and ticker information, and initial $$$
             calculate graph of the info, annual return rate, and number of shares initial and final
 
-            option for repurchase of shares
-            
-            
-            you get dividends per every share owned
-            reinvest dividends for shares
-            only use adjusted values
         '''
-        self.initial_shares = math.floor(initial_price/self.dataframe['close'][0])
-        self.initial_equity = self.initial_shares * self.dataframe['close'][0]
+        self.initial_shares = math.floor(initial_price/self.dataframe['adjClose'][0])
+        self.shares = self.initial_shares
+        self.initial_equity = self.initial_shares * self.dataframe['adjClose'][0]
+        self.total_dividends, new_dividend = 0, 0
+        index = 0
 
-        shares = self.initial_shares
-        # needed for custom end date
-        # end_date = datetime.date.today()
+        for dividend_per_share in self.dataframe['divCash']:
 
-        self.dividend_cash = 0
-        self.equity = self.initial_equity
+            if dividend_per_share != 0:
+                new_dividend = self.shares * dividend_per_share
 
-       # for row, content in self.dataframe.items():
+                # drip reinvestment
+                self.shares += new_dividend / self.dataframe['adjClose'][index]
+                self.total_dividends += new_dividend
 
-        '''
-            if row['divCash'] != 0:
-                self.dividend_cash += shares * day
+            index += 1
 
-                self.equity += self.dividend_cash
-        '''
 
 class Calculations:
     @staticmethod
     def moving_average(data, months: int):
         # X month ma with -365 start date from today
         # used temp label (XXX) to be replaced later
-        data['XXX'] = data['close'].rolling(months, min_periods=months).mean()
+        data['XXX'] = data['adjClose'].rolling(months, min_periods=months).mean()
 
     @staticmethod
     def exp_moving_average(data, months: int):
         # X month ma with -365 start date from today
         # used temp label (XXX) to be replaced later
-        data['XXX'] = data['close'].ewm(min_periods=0, span=months, adjust=False).mean()
+        data['XXX'] = data['adjClose'].ewm(min_periods=0, span=months, adjust=False).mean()
 
     @staticmethod
     def macd(data):

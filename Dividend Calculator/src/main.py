@@ -1,14 +1,15 @@
 import datetime
 from src import TiingoQuotes
-from src.TiingoQuotes import Calculations as calc
 import matplotlib.pyplot as plt
 import numpy as np
 
 
 def main():
     # for valid columns from tiingo check dataframe.valid_columns
-    symbol = 'TSLA'
-    data = TiingoQuotes.DividendCalculator(symbol, initial_price=1000).dataframe
+    symbol = 'KO'
+    start_date = '1999-01-01'
+    data = TiingoQuotes.DividendCalculator(symbol, initial_price=1000, start=start_date)
+    print(data.total_dividends)
 
     # graphing MACD & signal line
     '''
