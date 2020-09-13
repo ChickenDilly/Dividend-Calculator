@@ -1,25 +1,21 @@
 import datetime
 from src import TiingoQuotes
 import matplotlib.pyplot as plt
-import numpy as np
 
 
 def main():
     # for valid columns from tiingo check dataframe.valid_columns
-    symbol = 'KO'
-    start_date = '1999-01-01'
-    data = TiingoQuotes.DividendCalculator(symbol, initial_price=1000, start=start_date)
-    print(data.total_dividends)
+    symbol = 'MSFT'
+    end = '2020-09-14'
+    data = TiingoQuotes.DividendCalculator(symbol, initial_price=1000, end=end)
 
     # graphing MACD & signal line
-    '''
+
     fig, ax = plt.subplots()
-    ax.plot(data['date'], data['MACD'], label='MACD')
-    ax.plot(data['date'], data['Signal'], label='Signal Line')
+    ax.plot(data.dataframe['date'], data.dataframe['adjClose'], label="Close")
+    ax.plot(data.dataframe['date'], data.dataframe['total gain'], label="Gain")
     ax.set_xlabel('Date')
     plt.show()
-    '''
-
 
 
 if __name__ == '__main__':

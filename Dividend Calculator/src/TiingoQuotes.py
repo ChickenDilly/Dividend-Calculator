@@ -1,35 +1,42 @@
 import datetime
 from src.settings import client
 import math
+import numpy as np
 
 
 class Quotes:
     def __init__(self, ticker, start_date=None, end_date=None, metric_name=None):
         # isoformat for date yyyy-mm-dd
-        if start_date is None:
-            self.start_date = self.current_day_date - datetime.timedelta(days=365)
+        if start_date is None and end_date is None:
+            self.start_date = datetime.datetime.today() - datetime.timedelta(days=365)
+            self.end_date = datetime.date.today()
+
+        elif start_date is None:
+            self.start_date = datetime.date.today() - datetime.timedelta(days=365)
+            self.end_date = datetime.date.fromisoformat(end_date)
+
+        elif end_date is None:
+            self.start_date = datetime.date.fromisoformat(start_date)
+            self.end_date = datetime.date.today()
+
         else:
             self.start_date = datetime.date.fromisoformat(start_date)
-
-        if end_date is None:
-            self.current_day_date = datetime.date.today()
-        else:
             self.end_date = datetime.date.fromisoformat(end_date)
 
         self.ticker = Quotes.validate_ticker(ticker)
-        self.start_string = self.start_date.strftime(r'%m/%d/%Y')
-        self.current_day_string = self.current_day_date.strftime(r'%m/%d/%Y')
+        self.start_date_string = self.start_date.strftime(r'%m/%d/%Y')
+        self.end_date_string = self.end_date.strftime(r'%m/%d/%Y')
 
         # if tickers is list value, metric_name is needed to return a tiingo data point
-        self.dataframe = client.get_dataframe(tickers=self.ticker, metric_name=metric_name, startDate=self.start_string,
-                                              endDate=self.current_day_string)
+        self.dataframe = client.get_dataframe(tickers=self.ticker, metric_name=metric_name,
+                                              startDate=self.start_date_string, endDate=self.end_date_string)
         # adding the dates as the x index for dataframe
         reference_dates = list()
         for date in self.dataframe.index.date:
             date = date.strftime(r'%m/%d/%Y')
             reference_dates.append(date)
         self.dataframe['date'] = reference_dates
-        self.dataframe.set_index(keys='date', inplace=True)
+        self.dataframe.set_index(keys='date', inplace=True, drop=False)
 
     @staticmethod
     def validate_ticker(ticker):
@@ -39,7 +46,7 @@ class Quotes:
         # validates tickers (case sensistive).
         if type(ticker) is str:
             if ticker not in valid_tickers:
-                raise RuntimeError("{} is not found in Tiingo's database.".format({}))
+                raise RuntimeError("{} is not found in Tiingo's database.".format(ticker))
 
         elif type(ticker) is list:
             valid_list = []
@@ -60,31 +67,37 @@ class Quotes:
 
 
 class DividendCalculator(Quotes):
-    def __init__(self, ticker, initial_price, start=None, end_date=None):
-        super().__init__(ticker, start_date=start, metric_name=None)
+    def __init__(self, ticker, initial_price, start=None, end=None):
+        super().__init__(ticker, start_date=start, end_date=end)
 
         '''
             Dividend Calculator
             Need start date, end date, and ticker information, and initial $$$
             calculate graph of the info, annual return rate, and number of shares initial and final
-
         '''
+
         self.initial_shares = math.floor(initial_price/self.dataframe['adjClose'][0])
         self.shares = self.initial_shares
         self.initial_equity = self.initial_shares * self.dataframe['adjClose'][0]
         self.total_dividends, new_dividend = 0, 0
-        index = 0
+        dataframe_index = 0
+        total_gains = np.zeros(len(self.dataframe.index), dtype=float)
 
         for dividend_per_share in self.dataframe['divCash']:
+            if dividend_per_share == 0:
+                total_gains[dataframe_index] = self.dataframe['adjClose'][dataframe_index] * self.shares
 
-            if dividend_per_share != 0:
+            elif dividend_per_share != 0:
                 new_dividend = self.shares * dividend_per_share
 
                 # drip reinvestment
-                self.shares += new_dividend / self.dataframe['adjClose'][index]
+                self.shares += new_dividend / self.dataframe['adjClose'][dataframe_index]
                 self.total_dividends += new_dividend
+                total_gains[dataframe_index] = self.dataframe['adjClose'][dataframe_index] * self.shares
 
-            index += 1
+            dataframe_index += 1
+
+        self.dataframe['total gain'] = total_gains
 
 
 class Calculations:
