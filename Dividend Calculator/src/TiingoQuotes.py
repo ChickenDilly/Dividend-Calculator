@@ -6,7 +6,8 @@ import numpy as np
 
 class Quotes:
     def __init__(self, ticker, start_date=None, end_date=None, metric_name=None):
-        # isoformat for date yyyy-mm-dd
+
+        # isoformat for any input dates is yyyy-mm-dd
         if start_date is None and end_date is None:
             self.start_date = datetime.datetime.today() - datetime.timedelta(days=365)
             self.end_date = datetime.date.today()
@@ -70,48 +71,54 @@ class DividendCalculator(Quotes):
     def __init__(self, ticker, initial_price, start=None, end=None):
         super().__init__(ticker, start_date=start, end_date=end)
 
+        # isoformat for any input dates is yyyy-mm-dd
         '''
             Dividend Calculator
             Need start date, end date, and ticker information, and initial $$$
             calculate graph of the info, annual return rate, and number of shares initial and final
         '''
 
-        self.initial_shares = math.floor(initial_price/self.dataframe['adjClose'][0])
+        self.initial_shares = math.floor(initial_price/self.dataframe['close'][0])
         self.shares = self.initial_shares
-        self.initial_equity = self.initial_shares * self.dataframe['adjClose'][0]
+        self.initial_equity = self.initial_shares * self.dataframe['close'][0]
         self.total_dividends, new_dividend = 0, 0
         dataframe_index = 0
-        total_gains = np.zeros(len(self.dataframe.index), dtype=float)
+        assets = np.zeros(len(self.dataframe.index), dtype=float)
+        shares = np.zeros(len(self.dataframe.index), dtype=float)
 
         for dividend_per_share in self.dataframe['divCash']:
-            if dividend_per_share == 0:
-                total_gains[dataframe_index] = self.dataframe['adjClose'][dataframe_index] * self.shares
+            # checks for stock splits prior to calculations
+            if self.dataframe['splitFactor'][dataframe_index] != 1:
+                self.shares = self.shares * self.dataframe['splitFactor'][dataframe_index]
 
             elif dividend_per_share != 0:
                 new_dividend = self.shares * dividend_per_share
-
                 # drip reinvestment
-                self.shares += new_dividend / self.dataframe['adjClose'][dataframe_index]
+                self.shares += new_dividend / self.dataframe['close'][dataframe_index]
                 self.total_dividends += new_dividend
-                total_gains[dataframe_index] = self.dataframe['adjClose'][dataframe_index] * self.shares
 
+            assets[dataframe_index] = self.dataframe['close'][dataframe_index] * self.shares
+            shares[dataframe_index] = self.shares
             dataframe_index += 1
 
-        self.dataframe['total gain'] = total_gains
+        self.dataframe['total gain'] = assets
+        self.dataframe['shares'] = shares
 
 
 class Calculations:
     @staticmethod
     def moving_average(data, months: int):
+        # dataframe is required
         # X month ma with -365 start date from today
         # used temp label (XXX) to be replaced later
-        data['XXX'] = data['adjClose'].rolling(months, min_periods=months).mean()
+        data['XXX'] = data['close'].rolling(months, min_periods=months).mean()
 
     @staticmethod
     def exp_moving_average(data, months: int):
+        # dataframe is required
         # X month ma with -365 start date from today
         # used temp label (XXX) to be replaced later
-        data['XXX'] = data['adjClose'].ewm(min_periods=0, span=months, adjust=False).mean()
+        data['XXX'] = data['close'].ewm(min_periods=0, span=months, adjust=False).mean()
 
     @staticmethod
     def macd(data):
