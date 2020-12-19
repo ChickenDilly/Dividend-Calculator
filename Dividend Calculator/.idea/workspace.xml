@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5e729067-b52c-4bd0-b54d-cac552157fcd" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Antoine.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/Antoine.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TiingoQuotes.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/TiingoQuotes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/amd.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,23 +19,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/TiingoQuotes.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="740">
-              <caret line="73" column="39" selection-start-line="73" selection-start-column="39" selection-end-line="73" selection-end-column="39" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-                <element signature="e#3977#4969#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="9" column="50" selection-start-line="9" selection-start-column="50" selection-end-line="9" selection-end-column="50" />
+            <state relative-caret-position="21">
+              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -45,8 +33,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/tiingo/api.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="748">
-              <caret line="231" selection-start-line="231" selection-end-line="231" />
+            <state relative-caret-position="110">
+              <caret line="196" selection-start-line="196" selection-end-line="197" />
               <folding>
                 <element signature="e#377#427#0" />
                 <element signature="e#638#859#0" />
@@ -86,7 +74,14 @@
       <find>'close'</find>
       <find>new_dividend</find>
       <find>data</find>
+      <find>adjClose</find>
+      <find>total_gains</find>
       <find>data_1</find>
+      <find>'total gain'</find>
+      <find>'date'</find>
+      <find>0</find>
+      <find>data1_np</find>
+      <find>dataframe</find>
     </findStrings>
     <replaceStrings>
       <replace>ticker</replace>
@@ -95,6 +90,13 @@
       <replace>'adjClose'</replace>
       <replace>data_1</replace>
       <replace>data_2</replace>
+      <replace>close</replace>
+      <replace>assets</replace>
+      <replace>data1_np</replace>
+      <replace>14</replace>
+      <replace>13</replace>
+      <replace>data1</replace>
+      <replace>data</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -110,30 +112,28 @@
         <option value="$PROJECT_DIR$/src/Companies.py" />
         <option value="$PROJECT_DIR$/src/settings.py" />
         <option value="$PROJECT_DIR$/src/test.py" />
-        <option value="$PROJECT_DIR$/src/main.py" />
+        <option value="$PROJECT_DIR$/src/tsla.json" />
+        <option value="$PROJECT_DIR$/src/Tests/test.txt" />
+        <option value="$PROJECT_DIR$/src/graphing.py" />
         <option value="$PROJECT_DIR$/src/TiingoQuotes.py" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectConfigurationFiles">
-    <option name="files">
-      <list>
-        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
+        <option value="$PROJECT_DIR$/src/main.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="831" />
-    <option name="y" value="37" />
-    <option name="width" value="1026" />
-    <option name="height" value="1005" />
+    <option name="x" value="953" />
+    <option name="width" value="974" />
+    <option name="height" value="1047" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
+      <showMembers ProjectPane="true" />
+      <sortByType ProjectPane="false" />
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -150,10 +150,10 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -297,21 +297,21 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="831" y="37" width="1026" height="1005" extended-state="0" />
+    <frame x="953" y="0" width="974" height="1047" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.200611" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1827957" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.2484787" />
       <window_info id="Favorites" order="2" side_tool="true" weight="0.3286004" />
       <window_info id="Repositories" order="3" weight="0.32921812" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.1327334" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.84926885" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4989754" weight="0.42975205" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4989754" weight="0.42906976" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3295838" />
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49848333" weight="0.32620922" />
-      <window_info anchor="bottom" id="Python Console" order="8" weight="0.62219596" />
+      <window_info anchor="bottom" id="Python Console" order="8" weight="0.62093025" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32508436" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5015167" side_tool="true" weight="0.32620922" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -395,11 +395,28 @@
       <configuration name="PythonConfigurationType">
         <watch expression="temp = (data.dataframe['adjClose'] - data.dataframe['adjClose'][0])/(data.dataframe['adjClose'][0])*100" language="Python" />
         <watch expression="data.dataframe['adjClose'][0]" language="Python" />
+        <watch expression="self.dataframe['splitFactor'][dataframe_index]" language="Python" />
+        <watch expression="self.shares" language="Python" />
       </configuration>
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
+      <expression>
+        <expression-string>self.shares</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.dataframe['splitFactor'][dataframe_index]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.dataframe['splitFactor']</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>temp = (data.dataframe['adjClose'] - data.dataframe['adjClose'][0])/(data.dataframe['adjClose'][0])*100</expression-string>
         <language-id>Python</language-id>
@@ -432,16 +449,6 @@
       </expression>
       <expression>
         <expression-string>data.dataframe</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>data.dataframe['total gain']</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>data['total gain']</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -546,13 +553,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/pandas/core/indexes/base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="2890" selection-start-line="2890" selection-end-line="2890" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/pandas/core/series.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="158">
@@ -574,8 +574,18 @@
     <entry file="file://$PROJECT_DIR$/src/TiingoQuotes.py.orig">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/tsla.csv" />
+    <entry file="file://$PROJECT_DIR$/src/Tests/test.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="4" lean-forward="true" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/supported_tickers.csv">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1320" />
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/settings.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -587,6 +597,9 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -595,10 +608,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/tsla.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/graphing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="16" selection-end-column="102" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/pandas/core/indexes/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="2890" selection-start-line="2890" selection-end-line="2890" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/tiingo/api.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="231" selection-start-line="231" selection-end-line="231" />
+        <state relative-caret-position="110">
+          <caret line="196" selection-start-line="196" selection-end-line="197" />
           <folding>
             <element signature="e#377#427#0" />
             <element signature="e#638#859#0" />
@@ -619,26 +649,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main.py">
+    <entry file="file://$PROJECT_DIR$/src/TiingoQuotes.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="9" column="50" selection-start-line="9" selection-start-column="50" selection-end-line="9" selection-end-column="50" />
+        <state relative-caret-position="364">
+          <caret line="88" column="28" lean-forward="true" selection-start-line="88" selection-start-column="28" selection-end-line="88" selection-end-column="28" />
           <folding>
-            <element signature="e#0#28#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#296#420#0" />
+            <element signature="e#467#603#0" />
+            <element signature="e#648#755#0" />
+            <element signature="e#1538#1612#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/TiingoQuotes.py">
+    <entry file="file://$PROJECT_DIR$/src/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="740">
-          <caret line="73" column="39" selection-start-line="73" selection-start-column="39" selection-end-line="73" selection-end-column="39" />
+        <state relative-caret-position="21">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
-            <element signature="e#3977#4969#0" />
+            <element signature="e#0#28#0" expanded="true" />
           </folding>
         </state>
       </provider>

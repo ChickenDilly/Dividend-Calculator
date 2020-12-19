@@ -101,8 +101,15 @@ class DividendCalculator(Quotes):
             shares[dataframe_index] = self.shares
             dataframe_index += 1
 
-        self.dataframe['total gain'] = assets
+        self.dataframe['assets'] = assets
         self.dataframe['shares'] = shares
+
+    def __getitem__(self, item):
+        try:
+            return self.dataframe[item]
+
+        except KeyError:
+            print("{} key was not found.".format(item))
 
 
 class Calculations:
@@ -111,14 +118,14 @@ class Calculations:
         # dataframe is required
         # X month ma with -365 start date from today
         # used temp label (XXX) to be replaced later
-        data['XXX'] = data['close'].rolling(months, min_periods=months).mean()
+        data['XXX'] = data['assets'].rolling(months, min_periods=months).mean()
 
     @staticmethod
     def exp_moving_average(data, months: int):
         # dataframe is required
         # X month ma with -365 start date from today
         # used temp label (XXX) to be replaced later
-        data['XXX'] = data['close'].ewm(min_periods=0, span=months, adjust=False).mean()
+        data['XXX'] = data['assets'].ewm(min_periods=0, span=months, adjust=False).mean()
 
     @staticmethod
     def macd(data):

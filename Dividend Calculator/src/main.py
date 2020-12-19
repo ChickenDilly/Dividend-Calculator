@@ -1,28 +1,36 @@
 from src import TiingoQuotes
 import matplotlib.pyplot as plt
+import numpy as np
 import datetime
 
 
-def main():
-    # for valid columns from tiingo check dataframe.valid_columns
-    symbol = 'TSLA'
-    end = datetime.datetime.today().strftime('%Y-%m-%d')
-    data_1 = TiingoQuotes.DividendCalculator(symbol, initial_price=1000000, end=end, start='2020-08-28')
-    data_1.dataframe.to_json('tsla.json')
-    return
+def normalize_data(data):
+    # normalize assets column for comparison to other dataframes
+    return (data - data[0]) / (data[0]) * 100
 
-    data_2 = TiingoQuotes.DividendCalculator('MCD', initial_price=1000, end=end, start='2000-01-01')
+
+def main():
+    # valid_columns form Tiingo api {'open', 'high', 'low', 'close', 'volume', 'adjOpen', 'adjHigh', 'adjLow',
+    #                  'adjClose', 'adjVolume', 'divCash', 'splitFactor'}
+
+    # Dataframe columns as of 12/15/2020(['close', 'high', 'low', 'open', 'volume', 'adjClose', 'adjHigh',
+    #        'adjLow', 'adjOpen', 'adjVolume', 'divCash', 'splitFactor', 'date',
+    #        'assets', 'shares']
+
+    symbol = 'AAPL'
+    end = datetime.datetime.today().strftime('%Y-%m-%d')
+    data1 = TiingoQuotes.DividendCalculator(symbol, initial_price=100000, end=end, start='2020-08-28')
+
 
     # graphing MACD & signal line
-
-    fig, ax = plt.subplots()
-    total_gain1 = (data_1.dataframe['total gain'] - data_1.dataframe['total gain'][0]) / (data_1.dataframe['total gain'][0]) * 100
-    total_gain2 = (data_2.dataframe['total gain'] - data_2.dataframe['total gain'][0]) / (data_2.dataframe['total gain'][0]) * 100
-    ax.set_xlabel('Date')
-
-    ax.plot(data_1.dataframe['date'], total_gain1, label="Gain", color ='b')
-    ax.plot(data_2.dataframe['date'], total_gain2, label="Gain", color='g')
-    plt.show()
+    # fig, ax = plt.subplots()
+    # ax.set_xlabel('Date')
+    # ax.set_ylabel('Gain')
+    # total_gain1 = normalize_data(data1['assets'])
+    #
+    # ax.plot(data1['date'], total_gain1, label="Gain", color ='b')
+    # plt.show()
+    data1.dataframe.plot()
 
 
 if __name__ == '__main__':
