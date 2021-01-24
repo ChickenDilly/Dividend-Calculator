@@ -11,7 +11,7 @@ def main():
     #        'adjLow', 'adjOpen', 'adjVolume', 'divCash', 'splitFactor', 'date',
     #        'assets', 'shares']
 
-    symbol = 'AAPL'
+    symbol = 'SO'
     end = datetime.datetime.today().strftime('%Y-%m-%d')
     data1 = TiingoQuotes.DividendCalculator(symbol, initial_price=10000, end=end, start='2018-08-28')
     graphing.graphing(data1=data1)

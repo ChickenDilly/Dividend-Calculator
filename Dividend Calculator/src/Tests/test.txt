@@ -1,5 +1,0 @@
-unit tests
-
-integration tests
-    tests correct output for total gains, shares
-
